@@ -14,7 +14,8 @@
         Spring says: <span class="blue">${msg}</span> 
         User id: <span class="blue">${userId}</span> 
         User name: <span class="blue">${userName}</span> 
-        <br /> 
+        <br />
+        Nouvel id: <span class="blue">${newId}</span>
         <br /> 
         <a href="javascript:void(0)" onclick="test()">Click to test JS</a> 
     </body> 

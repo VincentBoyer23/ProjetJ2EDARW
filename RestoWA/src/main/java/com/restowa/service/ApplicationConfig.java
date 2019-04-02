@@ -30,6 +30,8 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.restowa.service.AuthetificationResource.class);
+        resources.add(com.restowa.service.GetstoreinfoResource.class);
+        resources.add(com.restowa.service.GetuserinfoResource.class);
         resources.add(com.restowa.service.RegisterResource.class);
     }
     

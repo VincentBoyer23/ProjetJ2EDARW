@@ -7,8 +7,10 @@ package com.restowa.service;
 
 import com.restowa.bl.concrete.UserAccountManager;
 import com.restowa.domain.model.UserAccount;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -33,6 +35,9 @@ public class AuthetificationResource {
 
     @Context
     private UriInfo context;
+    
+    @Resource
+    UserAccountManager uamanager;
 
     /**
      * Creates a new instance of AuthetificationResource
@@ -54,15 +59,17 @@ public class AuthetificationResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String getJson(String content) {
-        UserAccountManager ua= new UserAccountManager();
+    public String postJson(String content) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject obj = (JSONObject) parser.parse(content);
-            UserAccount user = ua.getUserAccountByEmailAndPassword(obj.get("email"), obj.get("password"));
-            if(user!=null)
+            System.out.println((String) obj.get("email"));
+            List<UserAccount> users = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
+            System.out.println(users.get(0).getLastname());
+            
+            if(users.size()!=0)
             {
-                obj.put("iduser", user.getID());
+                obj.put("iduser", users.get(0).getID());
                 obj.put("authentificate", true);
                 return obj.toString();
             }

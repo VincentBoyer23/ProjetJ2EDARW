@@ -76,9 +76,11 @@ public class UserRestAPI {
             Long countuser = uamanager.checkUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
             /*on recupere l'utilisateur*/
             
+            
             if(countuser!=0)
             {
-                obj.put("iduser", users.get(0).getID());
+                UserAccount user = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password")).get(0);
+                obj.put("iduser", user.getID());
                 obj.put("authentificate", true);
                 return obj.toString();
             }

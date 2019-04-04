@@ -9,7 +9,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserAccountRepository extends JpaRepository<UserAccount, Integer> {
     
+    @Query("SELECT u FROM UserAccount u WHERE email=:email AND password=:password")
+    public List<UserAccount> findByEmailAndPassword(@Param("email") String email,@Param("password") String password);
+    
     @Query("SELECT count(*) FROM UserAccount u WHERE email=:email AND password=:password")
-    public List<Long> findByEmailAndPassword(@Param("email") String email,@Param("password") String password);
+    public List<Long> checkByEmailAndPassword(@Param("email") String email,@Param("password") String password);
     
 }

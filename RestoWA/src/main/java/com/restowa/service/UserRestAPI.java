@@ -72,11 +72,11 @@ public class UserRestAPI {
         JSONParser parser = new JSONParser();
         try {
             JSONObject obj = (JSONObject) parser.parse(content);
-            System.out.println((String) obj.get("email"));
-            List<UserAccount> users = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
-            System.out.println(users.get(0).getLastname());
+            /*on check si l'user est dans la bdd*/
+            Long countuser = uamanager.checkUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
+            /*on recupere l'utilisateur*/
             
-            if(!users.isEmpty())
+            if(countuser!=0)
             {
                 obj.put("iduser", users.get(0).getID());
                 obj.put("authentificate", true);

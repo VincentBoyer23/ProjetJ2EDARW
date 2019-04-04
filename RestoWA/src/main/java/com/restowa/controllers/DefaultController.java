@@ -36,7 +36,7 @@ public class DefaultController {
     public String index(ModelMap map) {
         
         //UserAccount ua = repo.findById(1).get();
-        UserAccount ua = uamanager.getUserAccountByEmailAndPassword("r.tibbers@truc.com","password").get(0);
+        UserAccount ua = uamanager.getUserAccountById(1);
         
         map.put("msg", "Hello Spring 5 Web MVC!");
         map.put("userId", ua.getID());

@@ -24,8 +24,8 @@ public class UserAccountManager {
         return this.repo.findById(id).get();
     }
     
-    public List<UserAccount> getUserAccountByEmailAndPassword(String email,String password) {
-        return this.repo.findByEmailAndPassword(email,password);
+    public Long checkUserAccountByEmailAndPassword(String email,String password) {
+        return this.repo.findByEmailAndPassword(email,password).get(0);
     }
     
     public int insertUserAccount(UserAccount user) {

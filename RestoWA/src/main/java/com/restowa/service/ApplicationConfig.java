@@ -7,20 +7,16 @@ package com.restowa.service;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author vinceduroc
  */
-@javax.ws.rs.ApplicationPath("webresources")
-public class ApplicationConfig extends Application {
+@ComponentScan("com.restowa.service")
+public class ApplicationConfig{
 
-    @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources = new java.util.HashSet<>();
-        addRestResourceClasses(resources);
-        return resources;
-    }
+    
 
     /**
      * Do not modify addRestResourceClasses() method.
@@ -28,11 +24,6 @@ public class ApplicationConfig extends Application {
      * all resources defined in the project.
      * If required, comment out calling this method in getClasses().
      */
-    private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.restowa.service.AuthetificationResource.class);
-        resources.add(com.restowa.service.GetstoreinfoResource.class);
-        resources.add(com.restowa.service.GetuserinfoResource.class);
-        resources.add(com.restowa.service.RegisterResource.class);
-    }
+    
     
 }

@@ -37,26 +37,10 @@ public class DefaultController {
         
         //UserAccount ua = repo.findById(1).get();
         UserAccount ua = uamanager.getUserAccountByEmailAndPassword("r.tibbers@truc.com","password").get(0);
-        UserAccount user = new UserAccount();
-        user.setFirstname("ief");
-        user.setLastname("iehfihe");
-        user.setActive(true);
-        user.setEmail("nergfe@oienrg.com");
-        user.setCreationDate(Date.from(Instant.now()));
-        user.setLastModificationDate(Date.from(Instant.now()));
-        user.setPhoneNumber("65465e4gf");
-        user.setPassword("kdie");
-        user.setRemoved(false);
-        user.setResetLinkValidateDate(Date.from(Instant.now()));
-        user.setResetPasswordLink("jhbiebg");
-        user.setType(tumanager.getTypeUserById(1));
-        user.setAddress(amanager.getAddressById(1));
-        int newId = uamanager.insertUserAccount(user);
         
         map.put("msg", "Hello Spring 5 Web MVC!");
         map.put("userId", ua.getID());
         map.put("userName", ua.getFirstname() + " " + ua.getLastname());
-        map.put("newId", newId);
         return "index";
     }
     

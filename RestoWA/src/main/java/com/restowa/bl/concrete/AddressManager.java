@@ -22,4 +22,12 @@ public class AddressManager {
     public Address getAddressById(int id) {
         return this.repo.findById(id).get();
     }
+    
+    public int insertAddress(Address address) {
+        return this.repo.saveAndFlush(address).getID();
+    }
+    
+    public Address getAddressByDetailsfindByDetails(String street,String city,String state,String zipcode,String country) {
+        return this.repo.findAddressByDetails(street, city, state, zipcode, country).get(0);
+    }
 }

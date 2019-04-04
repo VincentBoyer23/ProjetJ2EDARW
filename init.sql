@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mer. 27 mars 2019 à 17:00
+-- Généré le :  jeu. 04 avr. 2019 à 11:04
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -36,6 +36,13 @@ CREATE TABLE `address` (
   `zipcode` varchar(10) NOT NULL,
   `country` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `address`
+--
+
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zipcode`, `country`) VALUES
+(1, '54545 erfoejgoiej', 'oizejfojeo', 'ertertert', '65e46', 'elgnoengoe');
 
 -- --------------------------------------------------------
 
@@ -83,6 +90,13 @@ CREATE TABLE `typeuser` (
   `type` varchar(30) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `typeuser`
+--
+
+INSERT INTO `typeuser` (`id`, `type`) VALUES
+(1, 'lkejrgfper');
+
 -- --------------------------------------------------------
 
 --
@@ -111,7 +125,11 @@ CREATE TABLE `useraccounts` (
 --
 
 INSERT INTO `useraccounts` (`id`, `firstname`, `lastname`, `email`, `password`, `phonenumber`, `active`, `creationdate`, `lastmodificationdate`, `resetpasswordlink`, `resetlinkvalidatedate`, `isremoved`, `idtype`, `idaddress`) VALUES
-(1, 'Zeubi', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 1, '2019-03-06', '2019-03-06', 'http://resetmonpasswordsvp.com', '2019-09-19', 0, 1, 1);
+(1, 'Zeubi', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 1, '2019-03-06', '2019-03-06', 'http://resetmonpasswordsvp.com', '2019-09-19', 0, 1, 1),
+(2, 'Tibbers', 'Robert', 'r.tibbers@truc.com', 'password', '7894561230', 1, '2019-04-01', '2019-04-01', 'kefkjhevjbeikb', '2019-04-30', 0, 1, 1),
+(10, 'ief', 'iehfihe', 'nergfe@oienrg.com', 'kdie', '65465e4gf', 1, '2019-04-01', '2019-04-01', 'jhbiebg', '2019-04-01', 0, 1, 1),
+(11, 'ief', 'iehfihe', 'nergfe@oienrg.com', 'kdie', '65465e4gf', 1, '2019-04-04', '2019-04-04', 'jhbiebg', '2019-04-04', 0, 1, 1),
+(12, 'ief', 'iehfihe', 'nergfe@oienrg.com', 'kdie', '65465e4gf', 1, '2019-04-04', '2019-04-04', 'jhbiebg', '2019-04-04', 0, 1, 1);
 
 --
 -- Index pour les tables déchargées
@@ -155,7 +173,7 @@ ALTER TABLE `useraccounts`
 -- AUTO_INCREMENT pour la table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `openinghours`
 --
@@ -170,12 +188,12 @@ ALTER TABLE `stores`
 -- AUTO_INCREMENT pour la table `typeuser`
 --
 ALTER TABLE `typeuser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `useraccounts`
 --
 ALTER TABLE `useraccounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

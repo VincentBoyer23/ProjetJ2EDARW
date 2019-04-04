@@ -76,7 +76,7 @@ public class UserRestAPI {
             List<UserAccount> users = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
             System.out.println(users.get(0).getLastname());
             
-            if(users.size()!=0)
+            if(!users.isEmpty())
             {
                 obj.put("iduser", users.get(0).getID());
                 obj.put("authentificate", true);
@@ -87,6 +87,7 @@ public class UserRestAPI {
             
         } catch (ParseException ex) {
             Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         JSONObject obj = new JSONObject();
         return obj.toString();

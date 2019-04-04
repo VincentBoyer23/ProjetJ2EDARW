@@ -22,4 +22,8 @@ public class TypeUserManager {
     public TypeUser getTypeUserById(int id) {
         return this.repo.findById(id).get();
     }
+    
+    public TypeUser getTypeUserByType(String type) {
+        return this.repo.findTypeByType(type).get(0);
+    }
 }

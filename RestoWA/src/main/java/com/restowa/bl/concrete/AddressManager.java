@@ -2,6 +2,7 @@ package com.restowa.bl.concrete;
 
 import com.restowa.domain.model.Address;
 import com.restowa.domain.repository.AddressRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public class AddressManager {
         return this.repo.saveAndFlush(address).getID();
     }
     
-    public Address getAddressByDetailsfindByDetails(String street,String city,String state,String zipcode,String country) {
-        return this.repo.findAddressByDetails(street, city, state, zipcode, country).get(0);
+    public List<Address> getAddressByDetailsfindByDetails(String street,String city,String state,String zipcode,String country) {
+        return this.repo.findAddressByDetails(street, city, state, zipcode, country);
     }
 }

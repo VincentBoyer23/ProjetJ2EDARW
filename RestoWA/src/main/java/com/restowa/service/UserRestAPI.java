@@ -5,6 +5,8 @@
  */
 package com.restowa.service;
 
+import com.restowa.bl.concrete.AddressManager;
+import com.restowa.bl.concrete.TypeUserManager;
 import com.restowa.bl.concrete.UserAccountManager;
 import com.restowa.domain.model.Address;
 import com.restowa.domain.model.TypeUser;
@@ -59,6 +61,10 @@ public class UserRestAPI {
     
     @Resource
     UserAccountManager uamanager;
+    @Resource
+    TypeUserManager typemanager;
+    @Resource
+    AddressManager addressmanager;
 
     /**
      * Creates a new instance of AuthetificationResource
@@ -105,7 +111,7 @@ public class UserRestAPI {
             obj = (JSONObject) parser.parse(content);
             /*on teste si l'utilisateur est déjà enregistré*/
             List<UserAccount> users = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
-            if(users.size()!=0)
+            if(!users.isEmpty())
             {
                 obj.put("message", "L'utilisateur est déjà enregistré.");
                 return obj.toString();
@@ -134,19 +140,28 @@ public class UserRestAPI {
             
             user.setRemoved(false);
             /*mise en place du type d'utilisateur*/
-            TypeUser type = new TypeUser();
-            type.setType((String) obj.get("type"));
+            TypeUser type = typemanager.getTypeUserByType((String) obj.get("type"));
             user.setType(type);
             
             /*mise en place de l'adresse*/
             
-            Address address = new Address();
-            address.setStreet((String) obj.get("street"));
-            address.setCity((String) obj.get("city"));
-            address.setState((String) obj.get("state"));
-            address.setZipCode((String) obj.get("zipcode"));
-            address.setCountry((String) obj.get("country"));
-            user.setAddress(address);
+            List<Address> resultaddress = addressmanager.getAddressByDetailsfindByDetails((String) obj.get("street"),(String) obj.get("city"),(String) obj.get("state"),(String) obj.get("zipcode"),(String) obj.get("country"));
+            if(resultaddress.isEmpty())
+            {
+                Address address = new Address();
+                address.setStreet((String) obj.get("street"));
+                address.setCity((String) obj.get("city"));
+                address.setState((String) obj.get("state"));
+                address.setZipCode((String) obj.get("zipcode"));
+                address.setCountry((String) obj.get("country"));
+                int idaddress = addressmanager.insertAddress(address);
+                address.setID(idaddress);
+                user.setAddress(address);
+            }
+            else{
+                user.setAddress(resultaddress.get(0));
+            }
+            
             
             int iduser = uamanager.insertUserAccount(user);
             obj.put("iduser", iduser);

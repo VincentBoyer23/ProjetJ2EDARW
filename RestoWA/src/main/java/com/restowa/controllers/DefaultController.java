@@ -41,6 +41,8 @@ public class DefaultController {
         map.put("msg", "Hello Spring 5 Web MVC!");
         map.put("userId", ua.getID());
         map.put("userName", ua.getFirstname() + " " + ua.getLastname());
+        map.put("idType",ua.getType().getID());
+        map.put("userType", ua.getType().getType());
         return "index";
     }
     

@@ -54,13 +54,16 @@ public class UserAccount implements Serializable {
     @Column(name = "isremoved")
     private boolean removed;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idtype")
     private TypeUser type;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idaddress")
     private Address address;
+    
+    @Column(name = "authkey")
+    private String authKey;
 
     public int getID() {
         return ID;
@@ -172,6 +175,14 @@ public class UserAccount implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+    
+    public String getAuthKey() {
+        return authKey;
+    }
+
+    public void setAuthKey(String authKey) {
+        this.authKey = authKey;
     }
     
 }

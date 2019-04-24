@@ -35,4 +35,8 @@ public class UserAccountManager {
     public int insertUserAccount(UserAccount user) {
         return this.repo.saveAndFlush(user).getID();
     }
+    
+    public UserAccount getUserAccountByAuthKey(String authKey){
+        return this.repo.findByAuthKey(authKey).get(0);
+    }
 }

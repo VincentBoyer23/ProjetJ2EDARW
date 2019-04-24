@@ -15,4 +15,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Intege
     @Query("SELECT count(*) FROM UserAccount u WHERE email=:email AND password=:password")
     public List<Long> checkByEmailAndPassword(@Param("email") String email,@Param("password") String password);
     
+    @Query("SELECT u FROM UserAccount u WHERE authkey=:authkey")
+    public List<UserAccount> findByAuthKey(@Param("authkey") String authKey);
+    
 }

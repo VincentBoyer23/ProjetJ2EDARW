@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  jeu. 04 avr. 2019 à 11:04
+-- Généré le :  mer. 24 avr. 2019 à 17:04
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -63,6 +63,25 @@ CREATE TABLE `openinghours` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `promotions`
+--
+
+CREATE TABLE `promotions` (
+  `id` int(11) NOT NULL,
+  `key` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `shortdescription` text NOT NULL,
+  `longdescription` text NOT NULL,
+  `position` int(11) NOT NULL,
+  `disabled` tinyint(1) NOT NULL,
+  `startdate` date NOT NULL,
+  `enddate` date NOT NULL,
+  `imageurl` varchar(100) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `stores`
 --
 
@@ -117,19 +136,17 @@ CREATE TABLE `useraccounts` (
   `resetlinkvalidatedate` date NOT NULL,
   `isremoved` tinyint(1) NOT NULL,
   `idtype` int(11) NOT NULL,
-  `idaddress` int(11) NOT NULL
+  `idaddress` int(11) NOT NULL,
+  `authkey` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `useraccounts`
 --
 
-INSERT INTO `useraccounts` (`id`, `firstname`, `lastname`, `email`, `password`, `phonenumber`, `active`, `creationdate`, `lastmodificationdate`, `resetpasswordlink`, `resetlinkvalidatedate`, `isremoved`, `idtype`, `idaddress`) VALUES
-(1, 'Zeubi', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 1, '2019-03-06', '2019-03-06', 'http://resetmonpasswordsvp.com', '2019-09-19', 0, 1, 1),
-(2, 'Tibbers', 'Robert', 'r.tibbers@truc.com', 'password', '7894561230', 1, '2019-04-01', '2019-04-01', 'kefkjhevjbeikb', '2019-04-30', 0, 1, 1),
-(10, 'ief', 'iehfihe', 'nergfe@oienrg.com', 'kdie', '65465e4gf', 1, '2019-04-01', '2019-04-01', 'jhbiebg', '2019-04-01', 0, 1, 1),
-(11, 'ief', 'iehfihe', 'nergfe@oienrg.com', 'kdie', '65465e4gf', 1, '2019-04-04', '2019-04-04', 'jhbiebg', '2019-04-04', 0, 1, 1),
-(12, 'ief', 'iehfihe', 'nergfe@oienrg.com', 'kdie', '65465e4gf', 1, '2019-04-04', '2019-04-04', 'jhbiebg', '2019-04-04', 0, 1, 1);
+INSERT INTO `useraccounts` (`id`, `firstname`, `lastname`, `email`, `password`, `phonenumber`, `active`, `creationdate`, `lastmodificationdate`, `resetpasswordlink`, `resetlinkvalidatedate`, `isremoved`, `idtype`, `idaddress`, `authkey`) VALUES
+(1, 'Zeubi', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 1, '2019-03-06', '2019-03-06', 'http://resetmonpasswordsvp.com', '2019-09-19', 0, 1, 1, ''),
+(2, 'Tibbers', 'Robert', 'r.tibbers@truc.com', 'password', '7894561230', 1, '2019-04-01', '2019-04-01', 'kefkjhevjbeikb', '2019-04-30', 0, 1, 1, '');
 
 --
 -- Index pour les tables déchargées
@@ -145,6 +162,12 @@ ALTER TABLE `address`
 -- Index pour la table `openinghours`
 --
 ALTER TABLE `openinghours`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `promotions`
+--
+ALTER TABLE `promotions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -178,6 +201,11 @@ ALTER TABLE `address`
 -- AUTO_INCREMENT pour la table `openinghours`
 --
 ALTER TABLE `openinghours`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `promotions`
+--
+ALTER TABLE `promotions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `stores`

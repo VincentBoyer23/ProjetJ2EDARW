@@ -42,7 +42,7 @@ public class TokenManagement {
         jsonToken.put("uuid", uuid);
         jsonToken.put("dateExp", toDate(LocalDateTime.now().plusMinutes(15L)));
         String strtoken = jsonToken.toString();
-        uamanager.SetToken(userID);
+        uamanager.SetToken(userID, strtoken);
         byte[] encrypted=cipher.doFinal(strtoken.getBytes());
         String token = new String(encrypted);
         return token;
@@ -59,7 +59,7 @@ public class TokenManagement {
 	String strtoken=new String(decrypted);
         JSONParser parser = new JSONParser(); 
         JSONObject jsonToken = (JSONObject) parser.parse(strtoken);
-        String strtokenFromBdd = uamanager.getToken(jsonToken.get("userID"));
+        String strtokenFromBdd = uamanager.getTokenById((int) jsonToken.get("userID"));
         if(strtokenFromBdd==null)
         {
             return false;

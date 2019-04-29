@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mer. 24 avr. 2019 à 17:04
+-- Généré le :  lun. 29 avr. 2019 à 10:40
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -137,14 +137,14 @@ CREATE TABLE `useraccounts` (
   `isremoved` tinyint(1) NOT NULL,
   `idtype` int(11) NOT NULL,
   `idaddress` int(11) NOT NULL,
-  `authkey` varchar(100) NOT NULL
+  `token` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `useraccounts`
 --
 
-INSERT INTO `useraccounts` (`id`, `firstname`, `lastname`, `email`, `password`, `phonenumber`, `active`, `creationdate`, `lastmodificationdate`, `resetpasswordlink`, `resetlinkvalidatedate`, `isremoved`, `idtype`, `idaddress`, `authkey`) VALUES
+INSERT INTO `useraccounts` (`id`, `firstname`, `lastname`, `email`, `password`, `phonenumber`, `active`, `creationdate`, `lastmodificationdate`, `resetpasswordlink`, `resetlinkvalidatedate`, `isremoved`, `idtype`, `idaddress`, `token`) VALUES
 (1, 'Zeubi', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 1, '2019-03-06', '2019-03-06', 'http://resetmonpasswordsvp.com', '2019-09-19', 0, 1, 1, ''),
 (2, 'Tibbers', 'Robert', 'r.tibbers@truc.com', 'password', '7894561230', 1, '2019-04-01', '2019-04-01', 'kefkjhevjbeikb', '2019-04-30', 0, 1, 1, '');
 

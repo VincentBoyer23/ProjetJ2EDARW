@@ -36,7 +36,11 @@ public class UserAccountManager {
         return this.repo.saveAndFlush(user).getID();
     }
     
-    public UserAccount getUserAccountByAuthKey(String authKey){
-        return this.repo.findByAuthKey(authKey).get(0);
+    public String getTokenById(int userId){
+        return this.repo.findTokenById(userId).get(0);
+    }
+    
+    public void updateUserAccount(UserAccount user) {
+        this.repo.save(user);
     }
 }

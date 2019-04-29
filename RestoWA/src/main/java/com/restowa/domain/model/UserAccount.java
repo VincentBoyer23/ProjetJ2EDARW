@@ -62,8 +62,8 @@ public class UserAccount implements Serializable {
     @JoinColumn(name = "idaddress")
     private Address address;
     
-    @Column(name = "authkey")
-    private String authKey;
+    @Column(name = "token")
+    private String token;
 
     public int getID() {
         return ID;
@@ -177,12 +177,12 @@ public class UserAccount implements Serializable {
         this.address = address;
     }
     
-    public String getAuthKey() {
-        return authKey;
+    public String getToken() {
+        return token;
     }
 
-    public void setAuthKey(String authKey) {
-        this.authKey = authKey;
+    public void setToken(String token) {
+        this.token = token;
     }
     
 }

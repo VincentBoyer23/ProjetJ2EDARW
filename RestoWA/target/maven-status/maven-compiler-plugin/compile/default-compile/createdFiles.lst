@@ -10,7 +10,6 @@ com\restowa\domain\model\Address.class
 com\restowa\bl\concrete\StoreManager.class
 com\restowa\domain\repository\StoreRepository.class
 com\restowa\bl\concrete\AddressManager.class
-com\restowa\service\UserRestAPI.class
 com\restowa\domain\repository\PromotionRepository.class
 com\restowa\domain\model\OpeningHours.class
 com\restowa\controllers\DefaultController.class

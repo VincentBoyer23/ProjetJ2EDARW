@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
+import javax.annotation.Resource;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -22,13 +23,15 @@ import javax.crypto.spec.SecretKeySpec;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author vinceduroc
  */
+@Component
 public class TokenManagement {
-    
+    @Resource
     UserAccountManager uamanager;
     
     public String generateToken(int userID,String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
@@ -42,7 +45,7 @@ public class TokenManagement {
         jsonToken.put("uuid", uuid);
         jsonToken.put("dateExp", toDate(LocalDateTime.now().plusMinutes(15L)));
         String strtoken = jsonToken.toString();
-        uamanager.SetToken(userID, strtoken);
+        uamanager.setToken(userID, strtoken);
         byte[] encrypted=cipher.doFinal(strtoken.getBytes());
         String token = new String(encrypted);
         return token;

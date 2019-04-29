@@ -75,7 +75,6 @@ public class StoreRestAPI {
         obj.put("lattitude", store.getLattitude());
         obj.put("longitude", store.getLongitude());
         obj.put("lastmodificationdate", store.getLastModifiedDate());
-        /*savoir ce dont il a besoin en interface pour ne pas renvoyer un utilisateur entier*/
         obj.put("lastmodificationby", store.getLastModifiedBy());
         obj.put("street", store.getAddress().getStreet());
         obj.put("city", store.getAddress().getCity());

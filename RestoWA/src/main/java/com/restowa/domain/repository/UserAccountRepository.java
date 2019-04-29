@@ -18,4 +18,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Intege
     @Query("SELECT token FROM UserAccount WHERE id=:id")
     public List<String> findTokenById(@Param("id") int userId);
     
+    @Query("UPDATE UserAccount SET token=:token WHERE id=:id")
+    public void setToken(@Param("id") int userId , @Param("token") String token);
+    
 }

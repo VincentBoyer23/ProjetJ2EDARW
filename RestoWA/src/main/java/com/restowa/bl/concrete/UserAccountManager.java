@@ -43,4 +43,8 @@ public class UserAccountManager {
     public void updateUserAccount(UserAccount user) {
         this.repo.save(user);
     }
+    
+    public void setToken(int userId,String token){
+        this.repo.setToken(userId, token);
+    }
 }

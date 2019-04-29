@@ -22,4 +22,12 @@ public class StoreManager {
     public Store getStoreById(int id) {
         return this.repo.findById(id).get();
     }
+    
+    public int insertStore(Store store){
+        return this.repo.saveAndFlush(store).getID();
+    }
+    
+    public void updateStore(Store store){
+        this.repo.save(store);
+    }
 }

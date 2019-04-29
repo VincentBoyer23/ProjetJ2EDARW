@@ -11,6 +11,14 @@ import com.restowa.bl.concrete.UserAccountManager;
 import com.restowa.domain.model.Address;
 import com.restowa.domain.model.TypeUser;
 import com.restowa.domain.model.UserAccount;
+import com.restowa.utils.TokenManagement;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,16 +38,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import javax.annotation.Resource;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.inject.Inject;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.core.HttpHeaders;
 
 import javax.ws.rs.core.MediaType;
 
 import org.json.simple.JSONObject;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -58,6 +74,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/api/user")
 public class UserRestAPI {
 
+    @Resource
+    TokenManagement tokenManagement;
     
     @Resource
     UserAccountManager uamanager;
@@ -65,6 +83,9 @@ public class UserRestAPI {
     TypeUserManager typemanager;
     @Resource
     AddressManager addressmanager;
+    @Context
+    private UriInfo uriInfo;
+    
 
     /**
      * Creates a new instance of AuthetificationResource
@@ -86,7 +107,9 @@ public class UserRestAPI {
             if(countuser!=0)
             {
                 UserAccount user = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password")).get(0);
-                obj.put("iduser", user.getID());
+                String token = tokenManagement.generateToken(user.getID(), "clesecrete");
+                obj.put(token, "authentificationToken");
+                obj.put("authentificationToken", token);
                 obj.put("authentificate", true);
                 return obj.toString();
             }
@@ -96,6 +119,16 @@ public class UserRestAPI {
         } catch (ParseException ex) {
             Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
             
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
         JSONObject obj = new JSONObject();
         return obj.toString();
@@ -179,8 +212,13 @@ public class UserRestAPI {
     }
     
    @GetMapping(value = "/getuserinfo/{iduser}", produces = MediaType.APPLICATION_JSON)
-    public String getJson(@PathVariable("iduser") int iduser) {
+    public String getJson(@PathVariable("iduser") int iduser, @RequestBody String body, @RequestHeader HttpHeaders headers) throws Exception {
         JSONObject obj = new JSONObject();
+        if (!tokenManagement.verifyToken(headers.getHeaderString("authentificationToken")))
+        {
+            throw new Exception("Le Token n'est pas valide");
+        }
+
         UserAccount user = uamanager.getUserAccountById(iduser);
         obj.put("firstname", user.getFirstname());
         obj.put("lastname", user.getLastname());
@@ -201,4 +239,6 @@ public class UserRestAPI {
         obj.put("country", user.getAddress().getCountry());
         return obj.toString();
     }
+    
+    
 }

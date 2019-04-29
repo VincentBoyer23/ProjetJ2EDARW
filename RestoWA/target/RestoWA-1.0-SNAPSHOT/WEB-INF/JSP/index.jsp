@@ -13,7 +13,9 @@
         <h4>Spring 5 Web MVC via Annotations</h4> 
         Spring says: <span class="blue">${msg}</span> 
         User id: <span class="blue">${userId}</span> 
-        User name: <span class="blue">${userName}</span> 
+        User name: <span class="blue">${userName}</span>
+        IdType: <span class="blue">${idType}</span>
+        Type: <span clas="blue">${userType}</span>
         <br />
         <br /> 
         <a href="javascript:void(0)" onclick="test()">Click to test JS</a> 

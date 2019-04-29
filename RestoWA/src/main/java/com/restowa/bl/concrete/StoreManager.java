@@ -30,4 +30,8 @@ public class StoreManager {
     public void updateStore(Store store){
         this.repo.save(store);
     }
+    
+    public void deleteStore(Store store){
+        this.repo.delete(store);
+    }
 }

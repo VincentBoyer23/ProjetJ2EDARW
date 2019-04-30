@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
     
     @Query("SELECT p FROM Promotion p WHERE startdate<=:date AND endate>=:date")
-    public List<Promotion> filterPromotionByDate(@Param(":date") Date date);
+    public List<Promotion> filterPromotionByDate(@Param("date") Date date);
     
     @Query("SELECT p FROM Promotion p WHERE title LIKE CONCAT(CONCAT('%',:word),'%')")
     public List<Promotion> filterPromotionByTitle(@Param("word") String word);

@@ -12,8 +12,6 @@ import com.restowa.domain.model.Address;
 import com.restowa.domain.model.TypeUser;
 import com.restowa.domain.model.UserAccount;
 import com.restowa.utils.TokenManagement;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -74,8 +72,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/api/user")
 public class UserRestAPI {
 
-    @Resource
-    TokenManagement tokenManagement;
+    /*@Resource
+    TokenManagement tokenManagement;*/
     
     @Resource
     UserAccountManager uamanager;
@@ -94,17 +92,17 @@ public class UserRestAPI {
     }
 
     
-    @RequestMapping(value = "/postauthentification", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
+    /*@RequestMapping(value = "/postauthentification", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
     public String postauthJson(@RequestBody String content) {
         JSONParser parser = new JSONParser();
         try {
             JSONObject obj = (JSONObject) parser.parse(content);
             /*on check si l'user est dans la bdd*/
-            Long countuser = uamanager.checkUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
+      /*      Long countuser = uamanager.checkUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
             /*on recupere l'utilisateur*/
             
             
-            if(countuser!=0)
+        /*    if(countuser!=0)
             {
                 UserAccount user = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password")).get(0);
                 String token = tokenManagement.generateToken(user.getID(), "clesecrete");
@@ -132,7 +130,7 @@ public class UserRestAPI {
         }
         JSONObject obj = new JSONObject();
         return obj.toString();
-    }
+    }*/
     
     @RequestMapping(value = "/postregister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
     public String postregJson(@RequestBody String content) {
@@ -211,7 +209,7 @@ public class UserRestAPI {
         return obj.toString();
     }
     
-   @GetMapping(value = "/getuserinfo/{iduser}", produces = MediaType.APPLICATION_JSON)
+   /*@GetMapping(value = "/getuserinfo/{iduser}", produces = MediaType.APPLICATION_JSON)
     public String getJson(@PathVariable("iduser") int iduser, @RequestBody String body, @RequestHeader HttpHeaders headers) throws Exception {
         JSONObject obj = new JSONObject();
         if (!tokenManagement.verifyToken(headers.getHeaderString("authentificationToken")))
@@ -224,7 +222,7 @@ public class UserRestAPI {
         obj.put("lastname", user.getLastname());
         obj.put("email", user.getEmail());
         /*on ne met pas son mot de passe*/
-        obj.put("phonenumber", user.getPhoneNumber());
+       /* obj.put("phonenumber", user.getPhoneNumber());
         obj.put("active", true);
         obj.put("creationdate", user.getCreationDate());
         obj.put("lastmodificationdate", user.getLastModificationDate());
@@ -238,7 +236,7 @@ public class UserRestAPI {
         obj.put("zipcode", user.getAddress().getZipCode());
         obj.put("country", user.getAddress().getCountry());
         return obj.toString();
-    }
+    }*/
     
     
 }

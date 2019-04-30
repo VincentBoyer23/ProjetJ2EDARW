@@ -6,7 +6,6 @@
 package com.restowa.utils;
 
 import com.restowa.bl.concrete.UserAccountManager;
-import static io.jsonwebtoken.Jwts.parser;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;

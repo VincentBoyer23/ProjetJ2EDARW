@@ -12,9 +12,11 @@ import com.restowa.domain.model.Address;
 import com.restowa.domain.model.TypeUser;
 import com.restowa.domain.model.UserAccount;
 import com.restowa.utils.TokenManagement;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -72,8 +74,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/api/user")
 public class UserRestAPI {
 
-    /*@Resource
-    TokenManagement tokenManagement;*/
+    
+    TokenManagement tokenManagement = new TokenManagement();
     
     @Resource
     UserAccountManager uamanager;
@@ -92,21 +94,21 @@ public class UserRestAPI {
     }
 
     
-    /*@RequestMapping(value = "/postauthentification", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-    public String postauthJson(@RequestBody String content) {
+    @RequestMapping(value = "/postauthentification", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
+    public String postauthJson(@RequestBody String content) throws UnsupportedEncodingException {
         JSONParser parser = new JSONParser();
         try {
             JSONObject obj = (JSONObject) parser.parse(content);
             /*on check si l'user est dans la bdd*/
-      /*      Long countuser = uamanager.checkUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
+            Long countuser = uamanager.checkUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
             /*on recupere l'utilisateur*/
             
             
-        /*    if(countuser!=0)
+            if(countuser!=0)
             {
                 UserAccount user = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password")).get(0);
-                String token = tokenManagement.generateToken(user.getID(), "clesecrete");
-                obj.put(token, "authentificationToken");
+                String token = tokenManagement.generateToken(user.getID(), "java");
+                uamanager.setToken(user.getID(), token);
                 obj.put("authentificationToken", token);
                 obj.put("authentificate", true);
                 return obj.toString();
@@ -130,7 +132,7 @@ public class UserRestAPI {
         }
         JSONObject obj = new JSONObject();
         return obj.toString();
-    }*/
+    }
     
     @RequestMapping(value = "/postregister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
     public String postregJson(@RequestBody String content) {
@@ -209,34 +211,58 @@ public class UserRestAPI {
         return obj.toString();
     }
     
-   /*@GetMapping(value = "/getuserinfo/{iduser}", produces = MediaType.APPLICATION_JSON)
-    public String getJson(@PathVariable("iduser") int iduser, @RequestBody String body, @RequestHeader HttpHeaders headers) throws Exception {
-        JSONObject obj = new JSONObject();
-        if (!tokenManagement.verifyToken(headers.getHeaderString("authentificationToken")))
+    @RequestMapping(value = "/getuserinfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
+   /*@GetMapping(value = "/getuserinfo/{iduser}", produces = MediaType.APPLICATION_JSON)*/
+    public String getJson(/*@PathVariable("iduser") int iduser, */@RequestBody String body) throws Exception {
+        JSONParser parser = new JSONParser();
+        JSONObject obj;
+        obj = (JSONObject) parser.parse(body);
+        String token = (String) obj.get("authentificationToken");
+        if(token!=null)
+        {
+            JSONObject TokenSend = tokenManagement.DecryptToken(token,"clesecrete");
+            String strtokenFromBdd = uamanager.getTokenById(Integer.parseInt((String) TokenSend.get("userID")));
+            if(strtokenFromBdd!=null)
+            {
+                JSONObject TokenFromBdd = tokenManagement.DecryptToken(strtokenFromBdd,"java");
+                if(TokenFromBdd.get("uuid").equals(TokenSend.get("uuid")))
+                {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date dateexp = sdf.parse((String) TokenSend.get("dateExp"));
+                    if(dateexp.after(new Date()))
+                    {
+                        UserAccount user = uamanager.getUserAccountById(Integer.parseInt((String) TokenSend.get("userID")));
+                        obj.put("firstname", user.getFirstname());
+                        obj.put("lastname", user.getLastname());
+                        obj.put("email", user.getEmail());
+                       obj.put("phonenumber", user.getPhoneNumber());
+                        obj.put("active", true);
+                        obj.put("creationdate", user.getCreationDate());
+                        obj.put("lastmodificationdate", user.getLastModificationDate());
+                        obj.put("resetpasswordlink", user.getResetPasswordLink());
+                        obj.put("resetlinkvalidatedate", user.getResetLinkValidateDate());
+                        obj.put("isremoved", false);
+                        obj.put("type", user.getType().getType());
+                        obj.put("street", user.getAddress().getStreet());
+                        obj.put("city", user.getAddress().getCity());
+                        obj.put("state", user.getAddress().getState());
+                        obj.put("zipcode", user.getAddress().getZipCode());
+                        obj.put("country", user.getAddress().getCountry());
+                        return obj.toString();
+
+                    }
+                }
+            }
+        
+        /*if (!tokenManagement.DecryptToken(headers.getHeaderString("authentificationToken")))
         {
             throw new Exception("Le Token n'est pas valide");
+        }*/
         }
-
-        UserAccount user = uamanager.getUserAccountById(iduser);
-        obj.put("firstname", user.getFirstname());
-        obj.put("lastname", user.getLastname());
-        obj.put("email", user.getEmail());
-        /*on ne met pas son mot de passe*/
-       /* obj.put("phonenumber", user.getPhoneNumber());
-        obj.put("active", true);
-        obj.put("creationdate", user.getCreationDate());
-        obj.put("lastmodificationdate", user.getLastModificationDate());
-        obj.put("resetpasswordlink", user.getResetPasswordLink());
-        obj.put("resetlinkvalidatedate", user.getResetLinkValidateDate());
-        obj.put("isremoved", false);
-        obj.put("type", user.getType().getType());
-        obj.put("street", user.getAddress().getStreet());
-        obj.put("city", user.getAddress().getCity());
-        obj.put("state", user.getAddress().getState());
-        obj.put("zipcode", user.getAddress().getZipCode());
-        obj.put("country", user.getAddress().getCountry());
+           obj.put("message", "le client doit se reconnecter");
+        
         return obj.toString();
-    }*/
+    }
     
     
 }

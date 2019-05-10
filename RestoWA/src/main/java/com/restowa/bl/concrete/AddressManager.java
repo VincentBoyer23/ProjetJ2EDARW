@@ -28,6 +28,10 @@ public class AddressManager {
         return this.repo.saveAndFlush(address).getID();
     }
     
+        public void updateAddress(Address address) {
+            this.repo.save(address);
+    }
+    
     public List<Address> getAddressByDetailsfindByDetails(String street,String city,String state,String zipcode,String country) {
         return this.repo.findAddressByDetails(street, city, state, zipcode, country);
     }

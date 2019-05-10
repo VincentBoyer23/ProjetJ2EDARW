@@ -11,6 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "UserAccounts")
@@ -22,17 +27,23 @@ public class UserAccount implements Serializable {
     private int ID;
 
     @Column(name = "firstname")
+    @NotEmpty
     private String firstname;
     
+    @NotEmpty
     @Column(name = "lastname")
     private String lastname;
     
     @Column(name = "email")
+    @NotEmpty
+    @Email
     private String email;
     
     @Column(name = "password")
+    @Size(min = 8, max  =50)
     private String password;
     
+    @NotEmpty
     @Column(name = "phonenumber")
     private String phoneNumber;
     
@@ -59,6 +70,7 @@ public class UserAccount implements Serializable {
     private TypeUser type;
     
     @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({CascadeType.ALL})
     @JoinColumn(name = "idaddress")
     private Address address;
     

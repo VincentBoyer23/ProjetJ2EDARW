@@ -3,10 +3,8 @@ package com.restowa.domain.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name="stores")
@@ -24,7 +24,7 @@ public class Store implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
     
-    @Column(name = "key")
+    @Column(name = "mykey")
     private String key;
     
     @Column(name = "name")
@@ -49,11 +49,13 @@ public class Store implements Serializable{
     @JoinColumn(name = "lastmodifiedby    \n" +
 "")
     private UserAccount lastModifiedBy;
-    @ManyToOne
+    
+    @ManyToOne()
+    @Cascade({CascadeType.ALL})
     @JoinColumn(name = "idaddress")
     private Address address;
     
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "store", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="store")
     private Set<OpeningHours> openinghours;
 
     public int getID() {

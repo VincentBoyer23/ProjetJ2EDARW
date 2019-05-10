@@ -20,7 +20,7 @@ public class Promotion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column(name="key")
+    @Column(name="mykey")
     private String key;
     
     @Column(name="title")

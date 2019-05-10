@@ -1,3 +1,15 @@
 .blue {
     color: blue;
 }
+
+.errormsg{
+    color:red;
+}
+
+a{
+    margin-right: 10px;
+}
+
+i{
+    margin-right: 5px;
+}

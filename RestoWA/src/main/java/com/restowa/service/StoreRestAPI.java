@@ -67,18 +67,14 @@ public class StoreRestAPI {
     @GetMapping(value = "/getstoreinfo/{idstore}", produces = MediaType.APPLICATION_JSON)
     public String getJson(@PathVariable("idstore") int idstore) {
         JSONObject obj = new JSONObject();
-        System.out.println("hello");
         Store store = stmanager.getStoreById(idstore);
-        System.out.println(store.getName());
         obj.put("key", store.getKey());
         /*savoir ce dont il a besoin en interface pour ne pas renvoyer la liste des heures d'ouverture*/
         JSONArray arr = new JSONArray();
         Set<OpeningHours> setopeninghours = store.getOpeninghours();
-        System.out.println(store.getOpeninghours().isEmpty());
         
         for(OpeningHours oh : setopeninghours)
         {
-            System.out.println(oh.getDay());
             JSONObject openhourjson = new JSONObject();
             openhourjson.put("day", oh.getDay());
             openhourjson.put("from", oh.getFrom());

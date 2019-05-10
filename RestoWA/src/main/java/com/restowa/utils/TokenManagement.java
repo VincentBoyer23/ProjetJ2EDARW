@@ -24,6 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,8 +34,11 @@ import org.springframework.stereotype.Component;
 
 public class TokenManagement {
         
+    public TokenManagement(){
+        
+    }
    
-    public String generateToken(int userID,String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException
+    public static String generateToken(int userID,String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException
     {
         /*SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes("ISO-8859-1"),"Blowfish");
         Cipher cipher=Cipher.getInstance("Blowfish");
@@ -47,12 +51,11 @@ public class TokenManagement {
         jsonToken.put("uuid", uuid.toString());
         jsonToken.put("dateExp", date);
         String strtoken = jsonToken.toString();
-        System.out.println(strtoken);
         /*byte[] encrypted=cipher.doFinal(strtoken.getBytes("ISO-8859-1"));*/
         /*String token = new String(encrypted);*/
         String crypte= "";
         for (int i=0; i<strtoken.length();i++)  {
-            int c=strtoken.charAt(i)^48;  
+            int c=strtoken.charAt(i)^5;  
             crypte=crypte+(char)c; 
         }
         System.out.println(crypte);
@@ -90,20 +93,22 @@ public class TokenManagement {
         
     }*/
     
-    public JSONObject DecryptToken(String token, String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, ParseException, UnsupportedEncodingException
+    public static JSONObject DecryptToken(String token, String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, ParseException, UnsupportedEncodingException
     {
-        System.out.println(token);
+        
         /*SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes("ISO-8859-1"),"Blowfish");
         Cipher cipher=Cipher.getInstance("Blowfish");
         cipher.init(Cipher.DECRYPT_MODE, skeyspec);
         byte[] decrypted=cipher.doFinal(token.getBytes("ISO-8859-1"));
 	String strtoken=new String(decrypted);*/
+        
         String aCrypter= "";
         for (int i=0; i<token.length();i++)  {
-            int c=token.charAt(i)^48;  
+            int c=token.charAt(i)^5;  
             aCrypter=aCrypter+(char)c; 
         }
-        System.out.println(aCrypter);
+        
+        System.out.println( aCrypter );
         JSONParser parser = new JSONParser(); 
         JSONObject jsonToken = (JSONObject) parser.parse(aCrypter);
         /*String strtokenFromBdd = uamanager.getTokenById((int) jsonToken.get("userID"));
@@ -125,7 +130,7 @@ public class TokenManagement {
         return jsonToken;
         
     }
-    private Date toDate(LocalDateTime localDateTime) {
+    private static Date toDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 

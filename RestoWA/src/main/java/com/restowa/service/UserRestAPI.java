@@ -75,8 +75,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class UserRestAPI {
 
     
-    TokenManagement tokenManagement = new TokenManagement();
-    
     @Resource
     UserAccountManager uamanager;
     @Resource
@@ -107,7 +105,7 @@ public class UserRestAPI {
             if(countuser!=0)
             {
                 UserAccount user = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password")).get(0);
-                String token = tokenManagement.generateToken(user.getID(), "java");
+                String token = TokenManagement.generateToken(user.getID(), "clesecrete");
                 uamanager.setToken(user.getID(), token);
                 obj.put("authentificationToken", token);
                 obj.put("authentificate", true);
@@ -211,20 +209,25 @@ public class UserRestAPI {
         return obj.toString();
     }
     
-    @RequestMapping(value = "/getuserinfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-   /*@GetMapping(value = "/getuserinfo/{iduser}", produces = MediaType.APPLICATION_JSON)*/
-    public String getJson(/*@PathVariable("iduser") int iduser, */@RequestBody String body) throws Exception {
+    
+   @GetMapping(value = "/getuserinfo", produces = MediaType.APPLICATION_JSON)
+    public String getJson(@RequestHeader(value="authentificationToken") String token) throws Exception {
         JSONParser parser = new JSONParser();
-        JSONObject obj;
-        obj = (JSONObject) parser.parse(body);
-        String token = (String) obj.get("authentificationToken");
+        JSONObject obj = new JSONObject();
+        System.out.println("hello");
+        /*String token = headers.getHeaderString("authentificationToken");*/
+        System.out.println(token);
+        /*obj = (JSONObject) parser.parse(body);*/
+        /*String token = (String) obj.get("authentificationToken");*/
         if(token!=null)
         {
-            JSONObject TokenSend = tokenManagement.DecryptToken(token,"clesecrete");
+            JSONObject TokenSend = TokenManagement.DecryptToken(token,"clesecrete");
             String strtokenFromBdd = uamanager.getTokenById(Integer.parseInt((String) TokenSend.get("userID")));
+            System.out.println(strtokenFromBdd);
             if(strtokenFromBdd!=null)
             {
-                JSONObject TokenFromBdd = tokenManagement.DecryptToken(strtokenFromBdd,"java");
+                JSONObject TokenFromBdd = TokenManagement.DecryptToken(strtokenFromBdd,"java");
+                System.out.println(TokenFromBdd.toString());
                 if(TokenFromBdd.get("uuid").equals(TokenSend.get("uuid")))
                 {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

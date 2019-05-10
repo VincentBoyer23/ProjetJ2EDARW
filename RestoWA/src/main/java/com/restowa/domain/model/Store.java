@@ -46,9 +46,9 @@ public class Store implements Serializable{
     private Date lastModifiedDate;
     
     @ManyToOne
-    @JoinColumn(name = "lastmodifiedby")
+    @JoinColumn(name = "lastmodifiedby    \n" +
+"")
     private UserAccount lastModifiedBy;
-    
     @ManyToOne
     @JoinColumn(name = "idaddress")
     private Address address;

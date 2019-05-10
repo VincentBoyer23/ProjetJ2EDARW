@@ -9,7 +9,6 @@ com\restowa\config\AppConfig.class
 com\restowa\bl\concrete\PromotionManager.class
 com\restowa\domain\model\Address.class
 com\restowa\bl\concrete\StoreManager.class
-PromotionRestAPI.class
 com\restowa\domain\repository\StoreRepository.class
 com\restowa\bl\concrete\AddressManager.class
 com\restowa\service\UserRestAPI.class

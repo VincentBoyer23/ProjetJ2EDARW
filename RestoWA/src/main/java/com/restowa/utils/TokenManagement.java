@@ -6,6 +6,7 @@
 package com.restowa.utils;
 
 import com.restowa.bl.concrete.UserAccountManager;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -22,37 +23,45 @@ import javax.crypto.spec.SecretKeySpec;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  *
  * @author vinceduroc
  */
-@Component
+
 public class TokenManagement {
-    @Resource
-    UserAccountManager uamanager;
-    
-    public String generateToken(int userID,String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+        
+   
+    public String generateToken(int userID,String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException
     {
-        SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
+        /*SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes("ISO-8859-1"),"Blowfish");
         Cipher cipher=Cipher.getInstance("Blowfish");
-        cipher.init(Cipher.ENCRYPT_MODE, skeyspec);
+        cipher.init(Cipher.ENCRYPT_MODE, skeyspec);*/
         JSONObject jsonToken = new JSONObject();
         UUID uuid = UUID.randomUUID();
-        jsonToken.put("userID", userID);
-        jsonToken.put("uuid", uuid);
-        jsonToken.put("dateExp", toDate(LocalDateTime.now().plusMinutes(15L)));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = simpleDateFormat.format(toDate(LocalDateTime.now().plusMinutes(15L)));
+        jsonToken.put("userID", Integer.toString(userID));
+        jsonToken.put("uuid", uuid.toString());
+        jsonToken.put("dateExp", date);
         String strtoken = jsonToken.toString();
-        uamanager.setToken(userID, strtoken);
-        byte[] encrypted=cipher.doFinal(strtoken.getBytes());
-        String token = new String(encrypted);
-        return token;
+        System.out.println(strtoken);
+        /*byte[] encrypted=cipher.doFinal(strtoken.getBytes("ISO-8859-1"));*/
+        /*String token = new String(encrypted);*/
+        String crypte= "";
+        for (int i=0; i<strtoken.length();i++)  {
+            int c=strtoken.charAt(i)^48;  
+            crypte=crypte+(char)c; 
+        }
+        System.out.println(crypte);
+        return crypte;
         
         
     }
     
-    public boolean verifyToken(String token, String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, ParseException, java.text.ParseException
+    /*public boolean verifyToken(String token, String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, ParseException, java.text.ParseException
     {
         SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes(),"Blowfish");
         Cipher cipher=Cipher.getInstance("Blowfish");
@@ -61,7 +70,7 @@ public class TokenManagement {
 	String strtoken=new String(decrypted);
         JSONParser parser = new JSONParser(); 
         JSONObject jsonToken = (JSONObject) parser.parse(strtoken);
-        String strtokenFromBdd = uamanager.getTokenById((int) jsonToken.get("userID"));
+        /*String strtokenFromBdd = uamanager.getTokenById((int) jsonToken.get("userID"));
         if(strtokenFromBdd==null)
         {
             return false;
@@ -76,16 +85,49 @@ public class TokenManagement {
                 return true;
             }
             return false;
+        }*/
+        /*return false;
+        
+    }*/
+    
+    public JSONObject DecryptToken(String token, String strKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, ParseException, UnsupportedEncodingException
+    {
+        System.out.println(token);
+        /*SecretKeySpec skeyspec=new SecretKeySpec(strKey.getBytes("ISO-8859-1"),"Blowfish");
+        Cipher cipher=Cipher.getInstance("Blowfish");
+        cipher.init(Cipher.DECRYPT_MODE, skeyspec);
+        byte[] decrypted=cipher.doFinal(token.getBytes("ISO-8859-1"));
+	String strtoken=new String(decrypted);*/
+        String aCrypter= "";
+        for (int i=0; i<token.length();i++)  {
+            int c=token.charAt(i)^48;  
+            aCrypter=aCrypter+(char)c; 
         }
-        return false;
+        System.out.println(aCrypter);
+        JSONParser parser = new JSONParser(); 
+        JSONObject jsonToken = (JSONObject) parser.parse(aCrypter);
+        /*String strtokenFromBdd = uamanager.getTokenById((int) jsonToken.get("userID"));
+        if(strtokenFromBdd==null)
+        {
+            return false;
+        }
+        JSONObject jsonTokenFromBdd = (JSONObject) parser.parse(strtokenFromBdd);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if(jsonTokenFromBdd.get("uuid").equals(jsonToken.get("uuid")))
+        {
+            Date dateexp = sdf.parse((String) jsonToken.get("dateExp"));
+            if(dateexp.after(new Date()))
+            {
+                return true;
+            }
+            return false;
+        }*/
+        return jsonToken;
         
     }
     private Date toDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public boolean verifyToken(String headerString) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+       
 }

@@ -7,8 +7,10 @@ package com.restowa.service;
 
 import com.restowa.bl.concrete.StoreManager;
 import com.restowa.bl.concrete.UserAccountManager;
+import com.restowa.domain.model.OpeningHours;
 import com.restowa.domain.model.Store;
 import com.restowa.domain.model.UserAccount;
+import java.util.Set;
 import javax.annotation.Resource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -23,6 +25,7 @@ import org.json.simple.JSONObject;
 import javax.annotation.Resource;
 
 import javax.ws.rs.core.MediaType;
+import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
 
@@ -64,18 +67,34 @@ public class StoreRestAPI {
     @GetMapping(value = "/getstoreinfo/{idstore}", produces = MediaType.APPLICATION_JSON)
     public String getJson(@PathVariable("idstore") int idstore) {
         JSONObject obj = new JSONObject();
+        System.out.println("hello");
         Store store = stmanager.getStoreById(idstore);
+        System.out.println(store.getName());
         obj.put("key", store.getKey());
         /*savoir ce dont il a besoin en interface pour ne pas renvoyer la liste des heures d'ouverture*/
-
-        obj.put("openinghours", store.getOpeninghours());
+        JSONArray arr = new JSONArray();
+        Set<OpeningHours> setopeninghours = store.getOpeninghours();
+        System.out.println(store.getOpeninghours().isEmpty());
+        
+        for(OpeningHours oh : setopeninghours)
+        {
+            System.out.println(oh.getDay());
+            JSONObject openhourjson = new JSONObject();
+            openhourjson.put("day", oh.getDay());
+            openhourjson.put("from", oh.getFrom());
+            openhourjson.put("to", oh.getTo());
+            openhourjson.put("close", oh.isClosed());
+            openhourjson.put("24h", oh.isAllDay());;
+            arr.add(openhourjson);
+        }
+        obj.put("openinghours",arr );
         obj.put("name", store.getName());
         obj.put("phonenumber", store.getPhoneNumber());
         obj.put("email", store.getEmail());
         obj.put("lattitude", store.getLattitude());
         obj.put("longitude", store.getLongitude());
         obj.put("lastmodificationdate", store.getLastModifiedDate());
-        obj.put("lastmodificationby", store.getLastModifiedBy());
+        obj.put("lastmodificationby", store.getLastModifiedBy().getFirstname());
         obj.put("street", store.getAddress().getStreet());
         obj.put("city", store.getAddress().getCity());
         obj.put("state", store.getAddress().getState());

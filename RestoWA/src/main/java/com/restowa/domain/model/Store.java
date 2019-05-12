@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,7 +56,8 @@ public class Store implements Serializable{
     @JoinColumn(name = "idaddress")
     private Address address;
     
-    @OneToMany(mappedBy="store")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "store")
+    @Cascade({CascadeType.ALL})
     private Set<OpeningHours> openinghours;
 
     public int getID() {

@@ -14,62 +14,30 @@ import com.restowa.domain.model.UserAccount;
 import com.restowa.utils.TokenManagement;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
-import javax.ws.rs.core.MediaType;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import javax.annotation.Resource;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.inject.Inject;
-import javax.ws.rs.NotAuthorizedException;
-import javax.ws.rs.core.HttpHeaders;
-
 import javax.ws.rs.core.MediaType;
-
 import org.json.simple.JSONObject;
-import org.omg.CORBA.DynAnyPackage.Invalid;
-
 import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-/**
- * REST Web Service
- *
- * @author vinceduroc
- */
 @RestController
 @RequestMapping("/api/user")
 public class UserRestAPI {
@@ -85,9 +53,6 @@ public class UserRestAPI {
     private UriInfo uriInfo;
     
 
-    /**
-     * Creates a new instance of AuthetificationResource
-     */
     public UserRestAPI() {
     }
 
@@ -99,11 +64,12 @@ public class UserRestAPI {
             JSONObject obj = (JSONObject) parser.parse(content);
             /*on check si l'user est dans la bdd*/
             Long countuser = uamanager.checkUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password"));
-            /*on recupere l'utilisateur*/
             
             
             if(countuser!=0)
             {
+                        /*on recupere l'utilisateur*/
+    
                 UserAccount user = uamanager.getUserAccountByEmailAndPassword((String) obj.get("email"), (String) obj.get("password")).get(0);
                 String token = TokenManagement.generateToken(user.getID(), "clesecrete");
                 uamanager.setToken(user.getID(), token);
@@ -114,19 +80,9 @@ public class UserRestAPI {
             obj.put("authentificate", false);
             return obj.toString();
             
-        } catch (ParseException ex) {
+        } catch (ParseException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
             
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
-            Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
         JSONObject obj = new JSONObject();
         return obj.toString();
@@ -201,9 +157,7 @@ public class UserRestAPI {
         } catch (ParseException ex) {
             Logger.getLogger(UserRestAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-            
-        
+           
         JSONObject obj = new JSONObject();
         obj.put("message", "Enregistement impossible");
         return obj.toString();
@@ -214,20 +168,13 @@ public class UserRestAPI {
     public String getJson(@RequestHeader(value="authentificationToken") String token) throws Exception {
         JSONParser parser = new JSONParser();
         JSONObject obj = new JSONObject();
-        System.out.println("hello");
-        /*String token = headers.getHeaderString("authentificationToken");*/
-        System.out.println(token);
-        /*obj = (JSONObject) parser.parse(body);*/
-        /*String token = (String) obj.get("authentificationToken");*/
         if(token!=null)
         {
             JSONObject TokenSend = TokenManagement.DecryptToken(token,"clesecrete");
             String strtokenFromBdd = uamanager.getTokenById(Integer.parseInt((String) TokenSend.get("userID")));
-            System.out.println(strtokenFromBdd);
             if(strtokenFromBdd!=null)
             {
                 JSONObject TokenFromBdd = TokenManagement.DecryptToken(strtokenFromBdd,"java");
-                System.out.println(TokenFromBdd.toString());
                 if(TokenFromBdd.get("uuid").equals(TokenSend.get("uuid")))
                 {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -257,10 +204,6 @@ public class UserRestAPI {
                 }
             }
         
-        /*if (!tokenManagement.DecryptToken(headers.getHeaderString("authentificationToken")))
-        {
-            throw new Exception("Le Token n'est pas valide");
-        }*/
         }
            obj.put("message", "le client doit se reconnecter");
         

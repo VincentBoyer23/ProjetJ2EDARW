@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le :  Dim 19 mai 2019 à 17:51
--- Version du serveur :  5.7.17
--- Version de PHP :  5.6.30
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  Dim 19 mai 2019 à 19:32
+-- Version du serveur :  5.7.24
+-- Version de PHP :  7.2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,14 +28,16 @@ SET time_zone = "+00:00";
 -- Structure de la table `address`
 --
 
-CREATE TABLE `address` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `address`;
+CREATE TABLE IF NOT EXISTS `address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `street` varchar(100) NOT NULL,
   `city` varchar(50) NOT NULL,
   `state` varchar(50) NOT NULL,
   `zipcode` varchar(10) NOT NULL,
-  `country` varchar(50) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `country` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `address`
@@ -75,7 +77,18 @@ INSERT INTO `address` (`id`, `street`, `city`, `state`, `zipcode`, `country`) VA
 (31, '49 avenue de bordeaux', 'tours', 'indre et loire', '37300', 'France'),
 (32, 'f', 'f', 'f', '3867', 'france'),
 (33, 'f', 'f', 'f', '3867', 'france'),
-(34, 'Ici', 'La bas', 'Far away', '23568', 'La fronce');
+(34, 'Ici', 'La bas', 'Far away', '23568', 'La fronce'),
+(35, 'toto', 'TOURS', 'tours', '37200', 'France'),
+(36, 'rue', 'ville', 'etat', 'codepostal', 'pays'),
+(37, '10 ALLÃ?E AIMÃ?E DE LA ROCHEFOUCAULD', 'TOURS', 'tours', '37200', 'France'),
+(38, '10 ALLÃ?E AIMÃ?E DE LA ROCHEFOUCAULD', 'TOURS', 'tours', '37200', 'France'),
+(39, '10 ALLÃ?E AIMÃ?E DE LA ROCHEFOUCAULD', 'TOURS', 'tours', '37200', 'France'),
+(40, 'rue', 'ville', 'etat', 'codepostal', 'pays'),
+(41, 'rue', 'ville', 'etat', 'codepostal', 'pays'),
+(42, 'rue', 'ville', 'etat', 'codepostal', 'pays'),
+(43, 'la street', 'ville', 'etat', 'codepostal', 'pays'),
+(44, '540 rue leonard de vinci', 'Montpellier', 'occitanie', '34000', 'France'),
+(45, '10 ALLÃ?E AIMÃ?E DE LA ROCHEFOUCAULD', 'TOURS', 'tours', '37200', 'France');
 
 -- --------------------------------------------------------
 
@@ -83,14 +96,16 @@ INSERT INTO `address` (`id`, `street`, `city`, `state`, `zipcode`, `country`) VA
 -- Structure de la table `openinghours`
 --
 
-CREATE TABLE `openinghours` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `openinghours`;
+CREATE TABLE IF NOT EXISTS `openinghours` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `idstore` int(11) NOT NULL,
   `day` varchar(30) NOT NULL,
   `from` time NOT NULL,
   `to` time NOT NULL,
   `close` tinyint(1) NOT NULL,
-  `24h` tinyint(1) NOT NULL
+  `24h` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -99,8 +114,9 @@ CREATE TABLE `openinghours` (
 -- Structure de la table `promotions`
 --
 
-CREATE TABLE `promotions` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `promotions`;
+CREATE TABLE IF NOT EXISTS `promotions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `mykey` varchar(100) NOT NULL,
   `title` varchar(100) NOT NULL,
   `shortdescription` text NOT NULL,
@@ -110,15 +126,18 @@ CREATE TABLE `promotions` (
   `startdate` date DEFAULT NULL,
   `enddate` date DEFAULT NULL,
   `imageurl` varchar(100) DEFAULT NULL,
-  `idowner` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `idowner` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `promotions`
 --
 
 INSERT INTO `promotions` (`id`, `mykey`, `title`, `shortdescription`, `longdescription`, `position`, `disabled`, `startdate`, `enddate`, `imageurl`, `idowner`) VALUES
-(2, 'promo', 'promo-1', 'promo ', 'promo promo', 0, 0, NULL, NULL, 'https://img.argentdubeurre.com/content/4857/mcdo-big-mac-2-euros-1.jpg', 1);
+(2, 'promo', 'promo-1', 'promo ', 'promo promo', 0, 0, NULL, NULL, 'https://img.argentdubeurre.com/content/4857/mcdo-big-mac-2-euros-1.jpg', 1),
+(3, '1462346', 'promo', 'pas cool', 'dezdze', 0, 0, NULL, NULL, 'http://lnferfo.oif', NULL),
+(4, '154484', 'une promo', 'pas cool', '', 0, 0, NULL, NULL, 'http://lnferfo.oif', NULL);
 
 -- --------------------------------------------------------
 
@@ -126,8 +145,9 @@ INSERT INTO `promotions` (`id`, `mykey`, `title`, `shortdescription`, `longdescr
 -- Structure de la table `stores`
 --
 
-CREATE TABLE `stores` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `stores`;
+CREATE TABLE IF NOT EXISTS `stores` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `mykey` varchar(50) NOT NULL,
   `name` varchar(100) NOT NULL,
   `phonenumber` varchar(20) NOT NULL,
@@ -137,8 +157,9 @@ CREATE TABLE `stores` (
   `lastmodifieddate` date DEFAULT NULL,
   `lastmodifiedby` int(11) DEFAULT NULL,
   `idaddress` int(11) DEFAULT NULL,
-  `idowner` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `idowner` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `stores`
@@ -149,7 +170,10 @@ INSERT INTO `stores` (`id`, `mykey`, `name`, `phonenumber`, `email`, `lattitude`
 (8, 'store-1', 'premier store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 19, 1),
 (9, 'oui', 'damien maestracci', '676718162', 'damien.maestracci@gmail.com', 0, 0, '2019-05-09', NULL, 20, 1),
 (10, 'store-1', 'second store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 21, 1),
-(11, 'store-1', 'premier store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 22, 2);
+(11, 'store-1', 'premier store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 22, 2),
+(12, '168465168', 'VINCENT BOYER', '666533497', 'vincent.boyer2311@gmail.com', 0, 0, '2019-05-19', NULL, NULL, NULL),
+(13, 'dzezefefz', 'VINCENT BOYER', '666533497', 'vincent.boyer2311@gmail.com', 0, 0, '2019-05-19', NULL, 38, NULL),
+(14, '54645', 'bo&co', '1234567891', 'machn@gmail.com', 0, 0, '2019-05-19', NULL, 45, NULL);
 
 -- --------------------------------------------------------
 
@@ -157,10 +181,12 @@ INSERT INTO `stores` (`id`, `mykey`, `name`, `phonenumber`, `email`, `lattitude`
 -- Structure de la table `typeuser`
 --
 
-CREATE TABLE `typeuser` (
-  `id` int(11) NOT NULL,
-  `type` varchar(30) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `typeuser`;
+CREATE TABLE IF NOT EXISTS `typeuser` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `typeuser`
@@ -178,8 +204,9 @@ INSERT INTO `typeuser` (`id`, `type`) VALUES
 -- Structure de la table `useraccounts`
 --
 
-CREATE TABLE `useraccounts` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `useraccounts`;
+CREATE TABLE IF NOT EXISTS `useraccounts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -193,95 +220,39 @@ CREATE TABLE `useraccounts` (
   `isremoved` tinyint(1) DEFAULT NULL,
   `idtype` int(11) DEFAULT NULL,
   `idaddress` int(11) DEFAULT NULL,
-  `token` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `token` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `useraccounts`
 --
 
 INSERT INTO `useraccounts` (`id`, `firstname`, `lastname`, `email`, `password`, `phonenumber`, `active`, `creationdate`, `lastmodificationdate`, `resetpasswordlink`, `resetlinkvalidatedate`, `isremoved`, `idtype`, `idaddress`, `token`) VALUES
-(1, 'bouche', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 0, NULL, NULL, NULL, NULL, 0, 3, 26, NULL),
+(1, 'bouche', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 0, NULL, NULL, NULL, NULL, 0, 3, 26, '~\'adq`@}u\'?\'754<(50(4<%74?17?71\')\'pv`wLA\'?\'4\')\'ppla\'?\'ad`<<c7a(6gd1(1f24(g<gd(<gd0g50<77<6\'x'),
 (2, 'Tibbers', 'tintin', 'r.tibbers@truc.com', 'password', '7894561230', 0, NULL, NULL, NULL, NULL, 0, 3, 31, NULL),
 (13, 'damien', 'maestracci', 'damien.maestracci@gmail.com', 's3A2ZXy%xj^AF2DHk*qs7YqM', '676718162', 1, '2019-05-09', '2019-05-09', NULL, NULL, 0, 2, 3, NULL),
 (14, 'damien', 'maestracci', 'damien.maestracci@gmail.com', 'rb$gJsFE*&Sr9Z8UKQn5R^2j', '676718162', 1, '2019-05-09', '2019-05-09', NULL, NULL, 0, 2, 4, NULL),
 (15, 'damien', 'mae', 'damien.m@gmail.com', '12345678', '5678956', 1, '2019-05-10', '2019-05-10', NULL, NULL, 0, 2, 33, NULL),
-(16, 'moi', 'encore moi', 'toujours.moi@moi.moi', '123456789', '123456789', 1, '2019-05-10', '2019-05-10', NULL, NULL, 0, 2, 34, NULL);
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `address`
---
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `openinghours`
---
-ALTER TABLE `openinghours`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `promotions`
---
-ALTER TABLE `promotions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `stores`
---
-ALTER TABLE `stores`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `typeuser`
---
-ALTER TABLE `typeuser`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `useraccounts`
---
-ALTER TABLE `useraccounts`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `address`
---
-ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT pour la table `openinghours`
---
-ALTER TABLE `openinghours`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `promotions`
---
-ALTER TABLE `promotions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT pour la table `stores`
---
-ALTER TABLE `stores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT pour la table `typeuser`
---
-ALTER TABLE `typeuser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT pour la table `useraccounts`
---
-ALTER TABLE `useraccounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;COMMIT;
+(16, 'moi', 'encore moi', 'toujours.moi@moi.moi', '123456789', '123456789', 1, '2019-05-10', '2019-05-10', NULL, NULL, 0, 2, 34, NULL),
+(17, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, 35, NULL),
+(18, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, 37, NULL),
+(19, 'test', 'gerge', 'yolo@gmail.com', 'hehehehe', '1234567891', 1, '2019-05-19', '2019-05-19', '', '2019-05-20', 0, 2, 36, NULL),
+(20, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, NULL, NULL),
+(21, 'test', 'gerge', 'pour@gmail.com', 'hehehehe', '1234567891', 1, '2019-05-19', '2019-05-19', '', '2019-05-20', 0, 2, 36, NULL),
+(22, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, NULL, NULL),
+(23, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, NULL, NULL),
+(24, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, NULL, NULL),
+(25, 'vcbcb', 'vcbvc', 'gvhgvjh@gmail.com', '123456789', '1234567891', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, NULL, NULL),
+(26, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, 39, NULL),
+(27, 'test', 'tro', 'best@gmail.com', 'hehehehe', '1234567891', 1, '2019-05-19', '2019-05-19', '', '2019-05-20', 0, 2, 36, NULL),
+(28, 'VINCENT', 'BOYER', 'vincent.boyer2311@gmail.com', '123456789', '666533497', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, NULL, NULL),
+(29, 'test', 'tro', 'okt@gmail.com', 'hehehehe', '1234567891', 1, '2019-05-19', '2019-05-19', '', '2019-05-20', 0, 2, 40, NULL),
+(30, 'test', 'tro', 'carnaval@gmail.com', 'hehehehe', '1234567891', 1, '2019-05-19', '2019-05-19', '', '2019-05-20', 0, 2, 41, NULL),
+(31, 'test', 'tro', 'carnavala@gmail.com', 'hehehehe', '1234567891', 1, '2019-05-19', '2019-05-19', '', '2019-05-20', 0, 2, 42, NULL),
+(32, 'test', 'tro', 'hola@gmail.com', 'hehehehe', '1234567891', 1, '2019-05-19', '2019-05-19', '', '2019-05-20', 0, 2, 43, NULL),
+(33, 'Pompei', 'Louise', 'lalala@gmail.com', '123456789', '784526755', 1, '2019-05-19', '2019-05-19', NULL, NULL, 0, 2, 44, NULL);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

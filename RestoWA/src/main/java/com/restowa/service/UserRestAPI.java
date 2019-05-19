@@ -131,23 +131,16 @@ public class UserRestAPI {
             user.setType(type);
             
             /*mise en place de l'adresse*/
-            
-            List<Address> resultaddress = addressmanager.getAddressByDetailsfindByDetails((String) obj.get("street"),(String) obj.get("city"),(String) obj.get("state"),(String) obj.get("zipcode"),(String) obj.get("country"));
-            if(resultaddress.isEmpty())
-            {
+           
                 Address address = new Address();
                 address.setStreet((String) obj.get("street"));
                 address.setCity((String) obj.get("city"));
                 address.setState((String) obj.get("state"));
                 address.setZipCode((String) obj.get("zipcode"));
                 address.setCountry((String) obj.get("country"));
-                //int idaddress = addressmanager.insertAddress(address);
-                //address.setID(idaddress);
                 user.setAddress(address);
-            }
-            else{
-                user.setAddress(resultaddress.get(0));
-            }
+            
+            
             
             
             int iduser = uamanager.insertUserAccount(user);

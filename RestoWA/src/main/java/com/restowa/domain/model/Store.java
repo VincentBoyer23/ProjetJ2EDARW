@@ -53,6 +53,7 @@ public class Store implements Serializable{
     
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idaddress")
+    @Cascade({CascadeType.ALL})
     private Address address;
     
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "store")

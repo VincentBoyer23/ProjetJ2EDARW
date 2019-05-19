@@ -2,7 +2,6 @@ package com.restowa.domain.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "UserAccounts")
@@ -71,6 +72,7 @@ public class UserAccount implements Serializable {
     
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idaddress")
+    @Cascade({CascadeType.ALL})
     private Address address;
     
     @Column(name = "token")

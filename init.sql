@@ -1,23 +1,31 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: May 10, 2019 at 01:27 PM
--- Server version: 5.7.25
--- PHP Version: 7.3.1
+-- Hôte : 127.0.0.1
+-- Généré le :  Dim 19 mai 2019 à 17:51
+-- Version du serveur :  5.7.17
+-- Version de PHP :  5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- Database: `restodb`
+-- Base de données :  `restodb`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `address`
+-- Structure de la table `address`
 --
 
 CREATE TABLE `address` (
@@ -30,7 +38,7 @@ CREATE TABLE `address` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `address`
+-- Déchargement des données de la table `address`
 --
 
 INSERT INTO `address` (`id`, `street`, `city`, `state`, `zipcode`, `country`) VALUES
@@ -66,12 +74,13 @@ INSERT INTO `address` (`id`, `street`, `city`, `state`, `zipcode`, `country`) VA
 (30, 'f', 'f', 'f', '37300', 'france'),
 (31, '49 avenue de bordeaux', 'tours', 'indre et loire', '37300', 'France'),
 (32, 'f', 'f', 'f', '3867', 'france'),
-(33, 'f', 'f', 'f', '3867', 'france');
+(33, 'f', 'f', 'f', '3867', 'france'),
+(34, 'Ici', 'La bas', 'Far away', '23568', 'La fronce');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `openinghours`
+-- Structure de la table `openinghours`
 --
 
 CREATE TABLE `openinghours` (
@@ -87,7 +96,7 @@ CREATE TABLE `openinghours` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `promotions`
+-- Structure de la table `promotions`
 --
 
 CREATE TABLE `promotions` (
@@ -100,20 +109,21 @@ CREATE TABLE `promotions` (
   `disabled` tinyint(1) DEFAULT NULL,
   `startdate` date DEFAULT NULL,
   `enddate` date DEFAULT NULL,
-  `imageurl` varchar(100) DEFAULT NULL
+  `imageurl` varchar(100) DEFAULT NULL,
+  `idowner` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `promotions`
+-- Déchargement des données de la table `promotions`
 --
 
-INSERT INTO `promotions` (`id`, `mykey`, `title`, `shortdescription`, `longdescription`, `position`, `disabled`, `startdate`, `enddate`, `imageurl`) VALUES
-(2, 'promo', 'promo-1', 'promo ', 'promo promo', 0, 0, NULL, NULL, 'https://img.argentdubeurre.com/content/4857/mcdo-big-mac-2-euros-1.jpg');
+INSERT INTO `promotions` (`id`, `mykey`, `title`, `shortdescription`, `longdescription`, `position`, `disabled`, `startdate`, `enddate`, `imageurl`, `idowner`) VALUES
+(2, 'promo', 'promo-1', 'promo ', 'promo promo', 0, 0, NULL, NULL, 'https://img.argentdubeurre.com/content/4857/mcdo-big-mac-2-euros-1.jpg', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stores`
+-- Structure de la table `stores`
 --
 
 CREATE TABLE `stores` (
@@ -126,29 +136,25 @@ CREATE TABLE `stores` (
   `longitude` float DEFAULT NULL,
   `lastmodifieddate` date DEFAULT NULL,
   `lastmodifiedby` int(11) DEFAULT NULL,
-  `idaddress` int(11) DEFAULT NULL
+  `idaddress` int(11) DEFAULT NULL,
+  `idowner` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `stores`
+-- Déchargement des données de la table `stores`
 --
 
-INSERT INTO `stores` (`id`, `mykey`, `name`, `phonenumber`, `email`, `lattitude`, `longitude`, `lastmodifieddate`, `lastmodifiedby`, `idaddress`) VALUES
-(1, 'store-2', 'second store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 28),
-(3, 'f', 'f', 'f', 'f', 1, 1, '2019-05-01', 1, 1),
-(4, 'f', 'f', 'f', 'f', 1, 1, '2019-05-01', 1, 1),
-(5, 'f', 'f', 'f', 'f', 1, 1, '2019-05-01', 1, 1),
-(6, 'f', 'f', 'f', 'f', 1, 1, '2019-05-06', 1, 1),
-(7, 'f', 'f', 'f', 'f', 1, 1, '2019-05-06', 1, 1),
-(8, 'store-1', 'premier store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 19),
-(9, 'oui', 'damien maestracci', '676718162', 'damien.maestracci@gmail.com', 0, 0, '2019-05-09', NULL, 20),
-(10, 'store-1', 'second store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 21),
-(11, 'store-1', 'premier store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 22);
+INSERT INTO `stores` (`id`, `mykey`, `name`, `phonenumber`, `email`, `lattitude`, `longitude`, `lastmodifieddate`, `lastmodifiedby`, `idaddress`, `idowner`) VALUES
+(1, 'store-2', 'second store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 28, 1),
+(8, 'store-1', 'premier store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 19, 1),
+(9, 'oui', 'damien maestracci', '676718162', 'damien.maestracci@gmail.com', 0, 0, '2019-05-09', NULL, 20, 1),
+(10, 'store-1', 'second store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 21, 1),
+(11, 'store-1', 'premier store', '05678986', 'test@test.test', 10, -23.8, NULL, NULL, 22, 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `typeuser`
+-- Structure de la table `typeuser`
 --
 
 CREATE TABLE `typeuser` (
@@ -157,7 +163,7 @@ CREATE TABLE `typeuser` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `typeuser`
+-- Déchargement des données de la table `typeuser`
 --
 
 INSERT INTO `typeuser` (`id`, `type`) VALUES
@@ -169,7 +175,7 @@ INSERT INTO `typeuser` (`id`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `useraccounts`
+-- Structure de la table `useraccounts`
 --
 
 CREATE TABLE `useraccounts` (
@@ -191,92 +197,92 @@ CREATE TABLE `useraccounts` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `useraccounts`
+-- Déchargement des données de la table `useraccounts`
 --
 
 INSERT INTO `useraccounts` (`id`, `firstname`, `lastname`, `email`, `password`, `phonenumber`, `active`, `creationdate`, `lastmodificationdate`, `resetpasswordlink`, `resetlinkvalidatedate`, `isremoved`, `idtype`, `idaddress`, `token`) VALUES
-(1, 'bouche', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 0, NULL, NULL, NULL, NULL, 0, NULL, 26, NULL),
-(2, 'Tibbers', 'tintin', 'r.tibbers@truc.com', 'password', '7894561230', 0, NULL, NULL, NULL, NULL, 0, NULL, 31, NULL),
+(1, 'bouche', 'LaMouche', 'zeubi.lamouche@gmail.com', 'hehehehe', '0123456789', 0, NULL, NULL, NULL, NULL, 0, 3, 26, NULL),
+(2, 'Tibbers', 'tintin', 'r.tibbers@truc.com', 'password', '7894561230', 0, NULL, NULL, NULL, NULL, 0, 3, 31, NULL),
 (13, 'damien', 'maestracci', 'damien.maestracci@gmail.com', 's3A2ZXy%xj^AF2DHk*qs7YqM', '676718162', 1, '2019-05-09', '2019-05-09', NULL, NULL, 0, 2, 3, NULL),
 (14, 'damien', 'maestracci', 'damien.maestracci@gmail.com', 'rb$gJsFE*&Sr9Z8UKQn5R^2j', '676718162', 1, '2019-05-09', '2019-05-09', NULL, NULL, 0, 2, 4, NULL),
-(15, 'damien', 'mae', 'damien.m@gmail.com', '12345678', '5678956', 1, '2019-05-10', '2019-05-10', NULL, NULL, 0, 2, 33, NULL);
+(15, 'damien', 'mae', 'damien.m@gmail.com', '12345678', '5678956', 1, '2019-05-10', '2019-05-10', NULL, NULL, 0, 2, 33, NULL),
+(16, 'moi', 'encore moi', 'toujours.moi@moi.moi', '123456789', '123456789', 1, '2019-05-10', '2019-05-10', NULL, NULL, 0, 2, 34, NULL);
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `address`
+-- Index pour la table `address`
 --
 ALTER TABLE `address`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `openinghours`
+-- Index pour la table `openinghours`
 --
 ALTER TABLE `openinghours`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `promotions`
+-- Index pour la table `promotions`
 --
 ALTER TABLE `promotions`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `stores`
+-- Index pour la table `stores`
 --
 ALTER TABLE `stores`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `typeuser`
+-- Index pour la table `typeuser`
 --
 ALTER TABLE `typeuser`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `useraccounts`
+-- Index pour la table `useraccounts`
 --
 ALTER TABLE `useraccounts`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `address`
+-- AUTO_INCREMENT pour la table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
--- AUTO_INCREMENT for table `openinghours`
+-- AUTO_INCREMENT pour la table `openinghours`
 --
 ALTER TABLE `openinghours`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
--- AUTO_INCREMENT for table `promotions`
+-- AUTO_INCREMENT pour la table `promotions`
 --
 ALTER TABLE `promotions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
--- AUTO_INCREMENT for table `stores`
+-- AUTO_INCREMENT pour la table `stores`
 --
 ALTER TABLE `stores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
 --
--- AUTO_INCREMENT for table `typeuser`
+-- AUTO_INCREMENT pour la table `typeuser`
 --
 ALTER TABLE `typeuser`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
--- AUTO_INCREMENT for table `useraccounts`
+-- AUTO_INCREMENT pour la table `useraccounts`
 --
 ALTER TABLE `useraccounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

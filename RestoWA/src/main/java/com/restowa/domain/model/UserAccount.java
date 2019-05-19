@@ -69,7 +69,7 @@ public class UserAccount implements Serializable {
     @JoinColumn(name = "idtype")
     private TypeUser type;
     
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idaddress")
     private Address address;
     

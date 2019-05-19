@@ -51,7 +51,7 @@ public class Store implements Serializable{
     @JoinColumn(name = "lastmodifiedby")
     private UserAccount lastModifiedBy;
     
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idaddress")
     private Address address;
     

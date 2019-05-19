@@ -50,12 +50,21 @@ public class StoreRestAPI {
         obj.put("lattitude", store.getLattitude());
         obj.put("longitude", store.getLongitude());
         obj.put("lastmodificationdate", store.getLastModifiedDate());
-        obj.put("lastmodificationby", store.getLastModifiedBy().getFirstname());
+        if(store.getLastModifiedBy()!=null)
+        {
+            obj.put("lastmodificationby", store.getLastModifiedBy().getFirstname());
+        }
         obj.put("street", store.getAddress().getStreet());
         obj.put("city", store.getAddress().getCity());
         obj.put("state", store.getAddress().getState());
         obj.put("zipcode", store.getAddress().getZipCode());
         obj.put("Country", store.getAddress().getCountry());
+        /*On recupere des informations utiles sur le proprietaire*/
+        obj.put("nomowner", store.getOwner().getLastname());
+        obj.put("prenomowner", store.getOwner().getFirstname());
+        obj.put("email", store.getOwner().getEmail());
+        obj.put("phonenumber", store.getOwner().getPhoneNumber());
+        obj.put("active", store.getOwner().isActive());
         return obj.toString();
     }
 

@@ -141,8 +141,8 @@ public class UserRestAPI {
                 address.setState((String) obj.get("state"));
                 address.setZipCode((String) obj.get("zipcode"));
                 address.setCountry((String) obj.get("country"));
-                int idaddress = addressmanager.insertAddress(address);
-                address.setID(idaddress);
+                //int idaddress = addressmanager.insertAddress(address);
+                //address.setID(idaddress);
                 user.setAddress(address);
             }
             else{

@@ -11,7 +11,7 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
     @Query("SELECT s FROM Store s WHERE s.name LIKE CONCAT(CONCAT('%',:q),'%')")
     public List<Store> findByKeyword(@Param("q") String q);
     
-    @Query("SELECT s FROM Store s WHERE s.idowner=:id")
+    @Query("SELECT s FROM Store s WHERE s.owner.ID=:id")
     public List<Store> findByOwner(@Param("id") int idowner);
     
 }

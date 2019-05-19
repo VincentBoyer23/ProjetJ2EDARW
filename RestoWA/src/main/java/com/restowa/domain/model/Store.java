@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -47,18 +48,20 @@ public class Store implements Serializable{
     private Date lastModifiedDate;
     
     @ManyToOne
-    @JoinColumn(name = "lastmodifiedby    \n" +
-"")
+    @JoinColumn(name = "lastmodifiedby")
     private UserAccount lastModifiedBy;
     
-    @ManyToOne()
-    @Cascade({CascadeType.ALL})
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idaddress")
     private Address address;
     
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "store")
     @Cascade({CascadeType.ALL})
     private Set<OpeningHours> openinghours;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idowner")
+    private UserAccount owner;
 
     public int getID() {
         return ID;
@@ -146,6 +149,14 @@ public class Store implements Serializable{
 
     public void setOpeninghours(Set<OpeningHours> openinghours) {
         this.openinghours = openinghours;
+    }
+
+    public UserAccount getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserAccount owner) {
+        this.owner = owner;
     }
     
 }

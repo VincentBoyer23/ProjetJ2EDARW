@@ -18,4 +18,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
     @Query("SELECT p FROM Promotion p WHERE key LIKE CONCAT(CONCAT('%',:word),'%')")
     public List<Promotion> filterPromotionByKey(@Param("word") String word);
     
+    @Query("SELECT p FROM Promotion p WHERE idowner=:id")
+    public List<Promotion> filterPromotionByOwner(@Param("id") int idowner);
+    
 }

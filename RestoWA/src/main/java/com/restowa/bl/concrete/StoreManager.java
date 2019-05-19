@@ -32,6 +32,10 @@ public class StoreManager {
         return this.repo.findByKeyword(query);
     }
     
+    public List<Store> getStoresByOwner(int idowner){
+        return this.repo.findByOwner(idowner);
+    }
+    
     public int insertStore(Store store){
         return this.repo.saveAndFlush(store).getID();
     }

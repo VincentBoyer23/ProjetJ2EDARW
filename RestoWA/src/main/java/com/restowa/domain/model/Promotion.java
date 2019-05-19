@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -46,6 +49,10 @@ public class Promotion implements Serializable {
     
     @Column(name="imageurl")
     private String imageURL;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idowner")
+    private UserAccount owner;
 
     public int getId() {
         return id;
@@ -125,6 +132,14 @@ public class Promotion implements Serializable {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public UserAccount getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserAccount owner) {
+        this.owner = owner;
     }
     
 }

@@ -53,4 +53,8 @@ public class PromotionManager {
         return this.repo.filterPromotionByKey(key);
     }
     
+    public List<Promotion> getPromotionByOwner(int idowner){
+        return this.repo.filterPromotionByOwner(idowner);
+    }
+    
 }
